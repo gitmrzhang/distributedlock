@@ -36,7 +36,11 @@ public class RedisDistributedLock extends AbstractLock {
 		}
 		// 超时时间
 		long start = localTimeMillis();
-		long timeout = unit.toMillis(time);
+		long timeout = localTimeMillis();
+		if(useTimeout){
+			 start = localTimeMillis();
+			 timeout = unit.toMillis(time);
+		}
 		while (useTimeout ? isTimeout(start, timeout) : true) {
 			if (interrupt) {
 				checkInterruption();

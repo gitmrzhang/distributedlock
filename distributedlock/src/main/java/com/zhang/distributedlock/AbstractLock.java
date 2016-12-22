@@ -54,7 +54,7 @@ public abstract class AbstractLock implements Lock {
 	@Override
 	public boolean tryLock(long time, TimeUnit unit) {
 		try {
-			return lock(false, time, unit, false);
+			return lock(true, time, unit, false);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -63,7 +63,7 @@ public abstract class AbstractLock implements Lock {
 
 	@Override
 	public boolean tryLockInterruptibly(long time, TimeUnit unit) throws InterruptedException {
-		return lock(false, time, unit, true);
+		return lock(true, time, unit, true);
 	}
 
 	@Override

@@ -82,10 +82,10 @@ public class ZooKeeperDistributedLock extends AbstractLock {
 	
 	private boolean waitForLock(String waitNode,long timeout,TimeUnit unit) throws InterruptedException{
 		if(zkclient.exists(waitNode)){
-			System.out.println("监听子节点"+waitNode);
 			zkclient.subscribeChildChanges(waitNode, new IZkChildListener() {
 				@Override
 				public void handleChildChange(String parentPath, List<String> currentChilds) throws Exception {
+					System.out.println("监听子节点"+parentPath+"发生变化");
 					tryLock();
 				}
 			});

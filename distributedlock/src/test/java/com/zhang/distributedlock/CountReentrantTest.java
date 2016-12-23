@@ -5,12 +5,14 @@ import org.junit.Test;
 
 import com.zhang.distributedlock.util.ExecuteTimeUtil;
 
-public class CountRedisTest {
+
+public class CountReentrantTest {
 	@Test
 	public void test() throws InterruptedException{
 		
-		CountRedisThread thread1 = new CountRedisThread("redis1");
-		CountRedisThread thread2 = new CountRedisThread("redis2");
+		CountThread2 target = new CountThread2();
+		Thread thread1 = new Thread(target);
+		Thread thread2 = new Thread(target);
 		System.out.println("开始执行任务");
 		ExecuteTimeUtil.start();
 		thread1.start();

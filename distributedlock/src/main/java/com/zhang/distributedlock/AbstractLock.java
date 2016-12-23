@@ -2,8 +2,11 @@ package com.zhang.distributedlock;
 
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
+
 public abstract class AbstractLock implements Lock {
 
+	private Logger logger = Logger.getLogger(AbstractLock.class);
 	/**
 	 * <pre>
 	 *  
@@ -18,12 +21,18 @@ public abstract class AbstractLock implements Lock {
 	 * 当前jvm内持有该锁的线程(if have one)
 	 */
 	private Thread exclusiveOwnerThread;
-	
+
 	protected final Thread getExclusiveOwnerThread() {
 		return exclusiveOwnerThread;
 	}
 
 	protected void setExclusiveOwnerThread(Thread exclusiveOwnerThread) {
+		if (logger.isDebugEnabled())
+			if (exclusiveOwnerThread == null)
+				logger.debug(Thread.currentThread().getName() + "释放锁");
+			else
+				logger.debug(Thread.currentThread().getName() + "获得锁,进行业务处理");
+
 		this.exclusiveOwnerThread = exclusiveOwnerThread;
 	}
 
@@ -94,7 +103,7 @@ public abstract class AbstractLock implements Lock {
 	 */
 	protected abstract boolean lock(boolean useTimeout, long time, TimeUnit unit, boolean interrupt)
 			throws InterruptedException;
-	
+
 	protected void checkInterruption() throws InterruptedException {
 		if (Thread.currentThread().isInterrupted()) {
 			throw new InterruptedException();

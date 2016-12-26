@@ -75,9 +75,8 @@ public class ZooKeeperDistributedLock extends AbstractLock {
 		}else{
 			timeout = useTimeout?time:timeout;
 			unit = unit==null?TimeUnit.MILLISECONDS:unit;
-			waitForLock(waitNode,timeout,unit);
+			return waitForLock(waitNode,timeout,unit);
 		}
-		return tryLock();
 	}
 	
 	private boolean waitForLock(String waitNode,long timeout,TimeUnit unit) throws InterruptedException{

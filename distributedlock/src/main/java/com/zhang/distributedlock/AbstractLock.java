@@ -109,5 +109,23 @@ public abstract class AbstractLock implements Lock {
 			throw new InterruptedException();
 		}
 	}
+	
+	/**
+	 * 判断锁超时时间 超过则退出获取锁 等待下一次获取
+	 * 
+	 * @param start
+	 * @param timeout
+	 * @return
+	 */
+	protected boolean isTimeout(long start, long timeout) {
+		return start + timeout > localTimeMillis();
+	}
+	/**
+	 * 获取当前时间
+	 * @return
+	 */
+	protected long localTimeMillis() {
+		return System.currentTimeMillis();
+	}
 
 }

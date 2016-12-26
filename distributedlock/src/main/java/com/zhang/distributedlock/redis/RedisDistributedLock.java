@@ -27,14 +27,13 @@ public class RedisDistributedLock extends AbstractLock {
 
 	@Override
 	protected void unlock0() {
-		String value = jedis.get(lockKey);
-		if (!isTimeExpired(value)) {
+		if (!isTimeExpired(jedis.get(lockKey))) {
 			doUnlock();
 		}
 	}
 
 	@Override
-	protected boolean lock(boolean useTimeout, long time, TimeUnit unit, boolean interrupt)
+	protected synchronized boolean lock(boolean useTimeout, long time, TimeUnit unit, boolean interrupt)
 			throws InterruptedException {
 		if (interrupt) {
 			checkInterruption();
@@ -87,21 +86,6 @@ public class RedisDistributedLock extends AbstractLock {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * 判断锁超时时间 超过则退出获取锁 等待下一次获取
-	 * 
-	 * @param start
-	 * @param timeout
-	 * @return
-	 */
-	private boolean isTimeout(long start, long timeout) {
-		return start + timeout > localTimeMillis();
-	}
-
-	private long localTimeMillis() {
-		return System.currentTimeMillis();
 	}
 
 	/**
